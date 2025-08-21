@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:media_editor_app/crop_test_widget.dart';
 import 'package:media_editor_app/view/crop/media_crop_editor.dart';
 import 'package:video_player_media_kit/video_player_media_kit.dart';
 
@@ -37,8 +38,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: MediaCropEditor(),
+        child: CropTestWidget(),
+        //child: MediaCropEditor(),
       ),
     );
   }
 }
+
+/*
+기존
+Skia/OpenGL
+
+
+flutter.3.7 이후
+Impeller/Vulkan
+*/

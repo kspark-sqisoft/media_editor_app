@@ -23,8 +23,11 @@ class MediaCropEditor extends StatefulWidget {
 class _MediaCropEditorState extends State<MediaCropEditor> {
   Uint8List? _mediaBytes;
   MediaType? _mediaType;
-
+  String? _mediaName;
+  String? _mediaPath;
   Size? _mediaSize;
+  Duration? _mediaDuration;
+
   final List<CropRegion> _cropRegions = [];
   int _nextRegionId = 1;
   int? _selectedRegionId;
@@ -98,6 +101,10 @@ class _MediaCropEditorState extends State<MediaCropEditor> {
       _mediaBytes = null;
       _mediaType = null;
       _mediaSize = null;
+      _mediaDuration = null;
+      _mediaName = null;
+      _mediaPath = null;
+
       _cropRegions.clear();
       _nextRegionId = 1;
       _selectedRegionId = null;
@@ -120,6 +127,9 @@ class _MediaCropEditorState extends State<MediaCropEditor> {
               logger.d('file.name:${file.name}');
               logger.d('file.mimeType:${file.mimeType}');
               logger.d('file.path: ${file.path}');
+
+              _mediaName = file.name;
+              _mediaPath = file.path;
 
               _mediaBytes = await file.readAsBytes();
               //바이트 분석을 통한 mimeType 결정
@@ -175,7 +185,7 @@ class _MediaCropEditorState extends State<MediaCropEditor> {
                             ? ImagePlayer(
                                 key: ValueKey(_mediaBytes!.hashCode),
                                 bytes: _mediaBytes!,
-                                onVideoSize: (value) {
+                                onImageSize: (value) {
                                   setState(() {
                                     _mediaSize = value;
                                     logger.d('_mediaSize:$_mediaSize');
@@ -192,6 +202,11 @@ class _MediaCropEditorState extends State<MediaCropEditor> {
                                     _mediaSize = value;
                                     logger.d('_mediaSize:$_mediaSize');
                                     _getFittedBoxSize();
+                                  });
+                                },
+                                onVideoDuration: (value) {
+                                  setState(() {
+                                    _mediaDuration = value;
                                   });
                                 },
                               )
@@ -356,7 +371,7 @@ class _MediaCropEditorState extends State<MediaCropEditor> {
                     onRemove: _removeCropRegion,
                   ),
                 ),
-              //이미지 크기
+              //미디어 정보
               if (_mediaSize != null)
                 Align(
                   alignment: Alignment.bottomRight,
@@ -366,12 +381,41 @@ class _MediaCropEditorState extends State<MediaCropEditor> {
                       color: Colors.orange,
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    child: Text(
-                      '${_mediaSize!.width} x ${_mediaSize!.height}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (_mediaName != null)
+                          Text(
+                            '$_mediaName',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        if (_mediaPath != null)
+                          Text(
+                            '$_mediaPath',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        Text(
+                          '${_mediaSize!.width} x ${_mediaSize!.height}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        if (_mediaDuration != null)
+                          Text(
+                            '${_mediaDuration!.inMilliseconds}ms  ${Utils.formatDuration(_mediaDuration!.inMilliseconds)}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ),

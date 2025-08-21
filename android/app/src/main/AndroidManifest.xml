@@ -3,6 +3,11 @@
         android:label="media_editor_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        
+        <!--임팔라 false-->
+        <meta-data
+            android:name="io.flutter.embedding.android.EnableImpeller"
+            android:value="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

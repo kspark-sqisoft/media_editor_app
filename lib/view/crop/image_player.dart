@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:media_editor_app/urtil/utils.dart';
 
 class ImagePlayer extends StatefulWidget {
-  const ImagePlayer({super.key, required this.bytes, this.onVideoSize});
+  const ImagePlayer({super.key, required this.bytes, this.onImageSize});
   final Uint8List bytes;
-  final ValueChanged<Size>? onVideoSize; // 부모에게 알림
+  final ValueChanged<Size>? onImageSize; // 부모에게 알림
 
   @override
   State<ImagePlayer> createState() => _ImagePlayerState();
@@ -20,8 +20,8 @@ class _ImagePlayerState extends State<ImagePlayer> {
 
   Future<void> initPlatform() async {
     final size = await Utils.getImageSizeFromBytes(widget.bytes);
-    if (widget.onVideoSize != null) {
-      widget.onVideoSize!(size);
+    if (widget.onImageSize != null) {
+      widget.onImageSize!(size);
     }
   }
 

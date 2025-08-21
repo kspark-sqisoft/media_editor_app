@@ -70,4 +70,22 @@ class Utils {
       random.nextInt(256),
     );
   }
+
+  static String formatDuration(int milliseconds) {
+    int totalSeconds = (milliseconds / 1000).round();
+    int hours = totalSeconds ~/ 3600;
+    int minutes = (totalSeconds % 3600) ~/ 60;
+    int seconds = totalSeconds % 60;
+
+    if (hours > 0) {
+      // 1시간 이상: HH:MM:SS
+      return '${hours.toString().padLeft(2, '0')}h ${minutes.toString().padLeft(2, '0')}m ${seconds.toString().padLeft(2, '0')}s';
+    } else if (minutes > 0) {
+      // 1분 이상 1시간 미만: MM:SS
+      return '${minutes.toString().padLeft(2, '0')}m ${seconds.toString().padLeft(2, '0')}s';
+    } else {
+      // 1분 미만: SS
+      return '${seconds.toString().padLeft(2, '0')}s';
+    }
+  }
 }

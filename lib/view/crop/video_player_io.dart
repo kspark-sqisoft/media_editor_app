@@ -6,9 +6,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart' as vp;
 
 class VideoPlayer extends StatefulWidget {
-  const VideoPlayer({super.key, required this.bytes, this.onVideoSize});
+  const VideoPlayer({
+    super.key,
+    required this.bytes,
+    this.onVideoSize,
+    this.onVideoDuration,
+  });
   final Uint8List bytes;
   final ValueChanged<Size>? onVideoSize; // 부모에게 알림
+  final ValueChanged<Duration>? onVideoDuration;
 
   @override
   State<VideoPlayer> createState() => _VideoPlayerState();
@@ -41,6 +47,10 @@ class _VideoPlayerState extends State<VideoPlayer> {
         final size = _controller.value.size;
         if (widget.onVideoSize != null) {
           widget.onVideoSize!(size);
+        }
+        final duration = _controller.value.duration;
+        if (widget.onVideoDuration != null) {
+          widget.onVideoDuration!(duration);
         }
       }),
     );
